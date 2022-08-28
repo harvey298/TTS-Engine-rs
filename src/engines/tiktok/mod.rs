@@ -4,7 +4,7 @@ use std::io::{Write};
 
 use anyhow::{bail, Result};
 
-use crate::logger;
+use crate::{logger, util::write_data};
 
 pub mod manifest;
 
@@ -98,13 +98,7 @@ pub async fn run(text: String, filepath: String, voice: String) -> Result<()> {
 
     let base64_data = base64::decode(data)?;
 
-    let mut file = if std::path::Path::new(&filepath).exists() {
-        std::fs::OpenOptions::new().write(true).open(filepath)?
-    } else {
-        std::fs::OpenOptions::new().write(true).create_new(true).open(filepath)?
-    };
-
-    file.write_all(&base64_data)?;
+    write_data(&filepath, base64_data)?;
 
     //*/
 
@@ -130,9 +124,8 @@ pub fn run_blocking(text: String, filepath: String, voice: String) -> Result<()>
     .header("Content-Length", 0)
     .send()?;
     
-
     if res.status() != 200 {
-        let err = format!("TTS Server gave code: {}",res.status().clone());
+        let err = format!("TTS Server gave code: {}",res.status());
         logger::error(err.clone());
         bail!("{}",err);
     }

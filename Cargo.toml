@@ -15,3 +15,6 @@ serde_json = "1.0.82"
 base64 = "0.13.0"
 
 anyhow = "1.0.58"
+
+# For Streamlabs
+bytes = "1.2.1"
