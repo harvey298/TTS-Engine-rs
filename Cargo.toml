@@ -1,17 +1,33 @@
 [package]
 name = "tts_engine"
-version = "0.1.0"
+version = "0.1.2"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-reqwest = {version = "0.11.11", features = ["json","blocking"] }
-tokio = { version = "1.19.2", features = ["full"] }
+reqwest = {version = "0.11.11", features = ["json","blocking", "cookies"] }
 
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0.82"
 
+anyhow = "1.0.58"
+
+# For Streamlabs
+bytes = "1.2.1"
+
+# For Tiktok
 base64 = "0.13.0"
 
-anyhow = "1.0.58"
+async-recursion = "1.0.0"
+
+[features]
+default = ["helper", "blocking"]
+
+helper = ["streamlabs", "tiktok"]
+streamlabs = []
+tiktok = []
+blocking = ["tiktok_blocking", "streamlabs_blocking"]
+
+tiktok_blocking = []
+streamlabs_blocking = []

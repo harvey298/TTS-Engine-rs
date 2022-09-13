@@ -1,4 +1,21 @@
 // For Voice Managment
+
+/// Tikoks TTS engine wrapper
+#[cfg(feature = "tiktok")]
 pub mod tiktok;
 
-pub const TTS_ENGINES: [&str; 1] = ["tiktok"];
+/// Streamlabs Polly TTS engine wrapper
+#[cfg(feature = "streamlabs")]
+pub mod streamlabs;
+
+/// A List of TTS Engines currently supported
+#[allow(unused)]
+const TTS_ENGINES: [&str; 2] = ["tiktok", "streamlabs"];
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum TTSEngines {
+    /// Tiktok TTS
+    Tiktok,
+    /// Streamlabs TTS
+    Streamlabs
+}

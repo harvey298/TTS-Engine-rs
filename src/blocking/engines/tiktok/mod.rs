@@ -75,7 +75,7 @@ impl TTS {
         Self { voice, session_id }
     }
 
-    pub async fn gen_tts(&self, text: String, filepath: String) -> Result<()> {
+    pub fn gen_tts(&self, text: String, filepath: String) -> Result<()> {
         validate_voice(self.voice.clone())?;
     
         let endpoint = 
@@ -85,7 +85,7 @@ impl TTS {
         headers.insert("Content-Length", header::HeaderValue::from_static("0"));
         headers.insert("Cookie", header::HeaderValue::from_str(&format!("sessionid={}",self.session_id))?);
     
-        let client = reqwest::Client::builder()
+        let client = reqwest::blocking::Client::builder()
             .user_agent(USER_AGENT)
             .cookie_store(true)
             .default_headers(headers)
@@ -93,7 +93,7 @@ impl TTS {
     
         let res = client.post(endpoint)
         .header("Content-Length", 0)
-        .send().await?;
+        .send()?;
         
     
         if res.status() != 200 {
@@ -103,7 +103,7 @@ impl TTS {
         }
      
         logger::debug("Decoding");
-        let res: serde_json::Value = res.json().await?;
+        let res: serde_json::Value = res.json()?;
     
         logger::debug("Converting to String");
         let mut data = [res["data"]["v_str"].clone()][0].to_string();
