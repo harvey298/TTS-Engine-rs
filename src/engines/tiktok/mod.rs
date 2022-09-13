@@ -1,5 +1,4 @@
 // Tiktok Voice
-// Not maintained anymore
 
 use std::{io::{Write}, sync::Arc};
 
