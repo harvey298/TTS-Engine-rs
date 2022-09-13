@@ -10,7 +10,7 @@ pub mod streamlabs;
 
 /// A List of TTS Engines currently supported
 #[allow(unused)]
-const TTS_ENGINES: [&str; 2] = ["tiktok", "streamlabs"];
+pub const TTS_ENGINES: [&str; 2] = ["tiktok", "streamlabs"];
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum TTSEngines {
